@@ -1,0 +1,18 @@
+language: objective-c
+
+before_install:
+  - bundle update
+
+before_script:
+  - git clone https://github.com/artsy/emission.git
+  - cd emission && npm install
+  - git log -2
+  - cd Example && pod install
+  - cd ../..
+
+script:
+  - bundle exec fastlane validate_env_vars
+  - bundle exec fastlane setup_signing
+  - bundle exec fastlane stamp_plist
+  - bundle exec fastlane build
+  - bundle exec fastlane ship
