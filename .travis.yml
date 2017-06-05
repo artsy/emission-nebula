@@ -5,7 +5,7 @@ before_install:
 
 before_script:
   - git clone https://github.com/artsy/emission.git
-  - cd emission && npm install
+  - cd emission && git checkout de-swift && npm install
   - git log -2
   - cd Example && pod install
   - cd ../..
