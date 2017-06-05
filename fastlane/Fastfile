@@ -23,7 +23,7 @@ lane :ship do
 
   # Tag releases
   add_git_tag tag: tag
-  `git remote add http https://#{ENV["GITHUB_SUBMODULES_USER"]}@github.com/artsy/emission.git`
+  `git remote add http https://#{ENV['GITHUB_SUBMODULES_USER']}@github.com/artsy/emission.git`
   `git push http #{tag}`
 
   slack message: 'There is a new Emission beta available on Testflight.',
@@ -50,7 +50,19 @@ end
 
 # Used by CI, will not sneakily update (the CI only has read-only access to the repo anyway)
 lane :setup_signing do
-  match(type: 'appstore', readonly: true)
+  create_keychain(
+    name: ENV['MATCH_KEYCHAIN_NAME'],
+    password: ENV['MATCH_PASSWORD'],
+    default_keychain: true,
+    unlock: true,
+    timeout: 3600,
+    add_to_search_list: true
+  )
+
+  match(type: 'appstore',
+        keychain_name: ENV['MATCH_KEYCHAIN_NAME'],
+        keychain_password: ENV['MATCH_PASSWORD'],
+        readonly: true)
 end
 
 # Minor plist modifications
