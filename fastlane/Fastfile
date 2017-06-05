@@ -2,6 +2,9 @@
 
 # The main job for Fastlane in this repo.
 lane :ship do
+  setup_signing
+  build
+
   # Get the last 10 lines of the CHANGELOG for Testflight
   changelog = '../emission/CHANGELOG.md'
   upcoming_release_notes = File.read(changelog).lines[0...12].join("\n")

@@ -13,7 +13,5 @@ before_script:
 
 script:
   - bundle exec fastlane validate_env_vars
-  - bundle exec fastlane setup_signing
   - bundle exec fastlane stamp_plist
-  - bundle exec fastlane build
   - bundle exec fastlane ship
