@@ -2,14 +2,20 @@
 
 # The main job for Fastlane in this repo.
 lane :ship do
+  setup_signing
+
+  # OK, we're making the assumption that there is an already built
+  # xcarchive, why? Because for some reason it's not building via gym.
+
   gym workspace: 'emission/Example/Emission.xcworkspace',
       configuration: 'Deploy',
       scheme: 'Emission',
-      clean: true
+      skip_build_archive: true,
+      archive_path: "emission/Example/Emission.xcarchive"
 
   # Get the last 10 lines of the CHANGELOG for Testflight
   changelog = '../emission/CHANGELOG.md'
-  upcoming_release_notes = File.read(changelog).lines[0...12].join("\n")
+  upcoming_release_notes = File.read(changelog).split("\n### ").first
 
   # Log into iTunes connect, get the latest version of the app we shipped, and how many builds we've sent
   Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
