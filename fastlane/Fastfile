@@ -2,8 +2,10 @@
 
 # The main job for Fastlane in this repo.
 lane :ship do
-  setup_signing
-  build
+  gym workspace: 'emission/Example/Emission.xcworkspace',
+      configuration: 'Deploy',
+      scheme: 'Emission',
+      clean: true
 
   # Get the last 10 lines of the CHANGELOG for Testflight
   changelog = '../emission/CHANGELOG.md'
@@ -40,10 +42,6 @@ end
 # A separate build task so you can run `bundle exec fastlane build` to test the
 # build process locally.
 lane :build do
-  gym workspace: 'emission/Example/Emission.xcworkspace',
-      configuration: 'Deploy',
-      scheme: 'Emission',
-      clean: true
 end
 
 # In case you need to update the signing profiles for this app
