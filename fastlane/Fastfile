@@ -19,13 +19,19 @@ end
 lane :ship do
   setup_signing
 
-  # OK, we're making the assumption that there is an already built
-  # xcarchive, why? Because for some reason it's not building via gym.
-
   gym workspace: 'emission/Example/Emission.xcworkspace',
       configuration: 'Deploy',
       scheme: 'Emission'
-   
+
+  #  If deploying manually, use this:
+  #
+  # gym workspace: 'emission/Example/Emission.xcworkspace',
+  #   configuration: 'Deploy',
+  #   scheme: 'Emission',
+  #   skip_build_archive: true,
+  #   archive_path: '/Users/orta/Library/Developer/Xcode/Archives/2017-06-16/Emission 16-06-2017, 10.03.xcarchive'
+
+
   # Get the last 10 lines of the CHANGELOG for Testflight
   changelog = '../emission/CHANGELOG.md'
   upcoming_release_notes = File.read(changelog).split("\n### ").first
