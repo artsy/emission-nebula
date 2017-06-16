@@ -1,5 +1,20 @@
 # This is documented in the Artsy Blog: XXX
 
+lane :setup do
+  `rm -rf Emission` if Dir.exists? "Emission"
+  `git clone https://github.com/artsy/emission.git`
+  Dir.chdir('emission') do
+    `pod repo update`
+    `npm install`
+    Dir.chdir('Example') do
+      `pod repo update`
+      `pod install`
+    end
+  end
+
+  stamp_plist
+end
+
 # The main job for Fastlane in this repo.
 lane :ship do
   setup_signing
@@ -9,10 +24,8 @@ lane :ship do
 
   gym workspace: 'emission/Example/Emission.xcworkspace',
       configuration: 'Deploy',
-      scheme: 'Emission',
-      skip_build_archive: true,
-      archive_path: "emission/Example/Emission.xcarchive"
-
+      scheme: 'Emission'
+   
   # Get the last 10 lines of the CHANGELOG for Testflight
   changelog = '../emission/CHANGELOG.md'
   upcoming_release_notes = File.read(changelog).split("\n### ").first

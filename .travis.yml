@@ -5,11 +5,7 @@ before_install:
   - bundle update
 
 before_script:
-  - git clone https://github.com/artsy/emission.git
-  - cd emission && npm install
-  - git log -2
-  - cd Example && pod repo update && pod install
-  - cd ../..
+  - bundle exec fastlane setup
 
 script:
   - bundle exec fastlane validate_env_vars
@@ -17,6 +13,7 @@ script:
 
   - cd emission/Example
   - set -o pipefail && xcodebuild -scheme Emission -configuration Deploy archive -workspace Emission.xcworkspace -archivePath Emission.xcarchive | xcpretty
+  - stat Emission.xcarchive
   - cd ../..
 
 
