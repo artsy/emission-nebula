@@ -35,7 +35,7 @@ lane :ship do
 
 
   # Get the last 10 lines of the CHANGELOG for Testflight
-  changelog = '../emission/CHANGELOG.md'
+  changelog = 'emission/CHANGELOG.md'
   upcoming_release_notes = File.read(changelog).split("\n### ").first
 
   # Log into iTunes connect, get the latest version of the app we shipped, and how many builds we've sent
@@ -66,11 +66,6 @@ lane :ship do
         default_payloads: []
 end
 
-# A separate build task so you can run `bundle exec fastlane build` to test the
-# build process locally.
-lane :build do
-end
-
 # In case you need to update the signing profiles for this app
 lane :update_signing do
   match(type: 'appstore')
@@ -95,7 +90,7 @@ end
 
 # Minor plist modifications
 lane :stamp_plist do
-  plist = '../emission/Example/Emission/Info.plist'
+  plist = 'emission/Example/Emission/Info.plist'
 
   # Increment build number to current date
   build_number = Time.new.strftime('%Y.%m.%d.%H')
