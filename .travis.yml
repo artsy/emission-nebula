@@ -11,10 +11,4 @@ script:
   - bundle exec fastlane validate_env_vars
   - bundle exec fastlane stamp_plist
 
-  - cd emission/Example
-  - set -o pipefail && xcodebuild -scheme Emission -configuration Deploy archive -workspace Emission.xcworkspace -archivePath Emission.xcarchive | xcpretty
-  - stat Emission.xcarchive
-  - cd ../..
-
-
   - bundle exec fastlane ship
