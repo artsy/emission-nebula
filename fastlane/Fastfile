@@ -1,15 +1,16 @@
 # This is documented in the Artsy Blog: XXX
 
 lane :setup do
-  `rm -rf Emission` if Dir.exists? "Emission"
-  `git clone https://github.com/artsy/emission.git`
+  sh "rm -rf emission" if Dir.exists? "Emission"
+  sh "git clone https://github.com/artsy/emission.git"
   Dir.chdir('emission') do
-    `pod repo update`
-    `npm install`
-    Dir.chdir('Example') do
-      `pod repo update`
-      `pod install`
-    end
+    sh "pod repo update"
+    sh "npm install"
+  end
+
+  Dir.chdir('emission/Example') do
+    sh "pod repo update"
+    sh "pod install"
   end
 
   stamp_plist
@@ -18,7 +19,8 @@ end
 # The main job for Fastlane in this repo.
 lane :ship do
   setup_signing
-
+  puts Dir.pwd
+  
   gym workspace: 'emission/Example/Emission.xcworkspace',
       configuration: 'Deploy',
       scheme: 'Emission'
@@ -43,19 +45,18 @@ lane :ship do
     build_number: build_number,
     xcodeproj: "emission/Example/Emission.xcodeproj"
   )
-  
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for travis is read-only
   tag = "deploy-#{latest_version}-#{build_number}"
-  `git tag -d "#{tag}"`
+  sh "git tag -d '#{tag}'"
 
   # Ship to testflight
   pilot changelog: upcoming_release_notes
 
   # Tag releases
   add_git_tag tag: tag
-  `git remote add http https://#{ENV['GITHUB_SUBMODULES_USER']}@github.com/artsy/emission.git`
-  `git push http #{tag}`
+  sh "git remote add http https://#{ENV['GITHUB_SUBMODULES_USER']}@github.com/artsy/emission.git"
+  sh "git push http #{tag}"
 
   slack message: 'There is a new Emission beta available on Testflight.',
         payload: {
