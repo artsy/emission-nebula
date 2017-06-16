@@ -36,7 +36,7 @@ lane :ship do
   # Log into iTunes connect, get the latest version of the app we shipped, and how many builds we've sent
 
   build_number = latest_testflight_build_number + 1
-  version = get_version_number
+  version = get_version_number(xcodeproj: 'emission/Example/Emission.xcodeproj')
 
   increment_build_number(
     build_number: build_number,
