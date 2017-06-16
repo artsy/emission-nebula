@@ -1,26 +1,27 @@
 # This is documented in the Artsy Blog: XXX
 
 lane :setup do
-  sh "rm -rf emission" if Dir.exists? "Emission"
-  sh "git clone https://github.com/artsy/emission.git"
-  Dir.chdir('emission') do
-    sh "pod repo update"
-    sh "npm install"
-  end
+  Dir.chdir('..') do
+    sh 'rm -rf emission' if Dir.exist? 'Emission'
+    sh 'git clone https://github.com/artsy/emission.git'
+    Dir.chdir('emission') do
+      sh 'pod repo update'
+      sh 'npm install'
+    end
 
-  Dir.chdir('emission/Example') do
-    sh "pod repo update"
-    sh "pod install"
+    Dir.chdir('emission/Example') do
+      sh 'pod repo update'
+      sh 'pod install'
+    end
+    stamp_plist
   end
-
-  stamp_plist
 end
 
 # The main job for Fastlane in this repo.
 lane :ship do
   setup_signing
   puts Dir.pwd
-  
+
   gym workspace: 'emission/Example/Emission.xcworkspace',
       configuration: 'Deploy',
       scheme: 'Emission'
@@ -33,9 +34,8 @@ lane :ship do
   #   skip_build_archive: true,
   #   archive_path: '/Users/orta/Library/Developer/Xcode/Archives/2017-06-16/Emission 16-06-2017, 10.03.xcarchive'
 
-
   # Get the last 10 lines of the CHANGELOG for Testflight
-  changelog = 'emission/CHANGELOG.md'
+  changelog = '../emission/CHANGELOG.md'
   upcoming_release_notes = File.read(changelog).split("\n### ").first
 
   # Log into iTunes connect, get the latest version of the app we shipped, and how many builds we've sent
@@ -43,7 +43,7 @@ lane :ship do
   build_number = latest_testflight_build_number + 1
   increment_build_number(
     build_number: build_number,
-    xcodeproj: "emission/Example/Emission.xcodeproj"
+    xcodeproj: 'emission/Example/Emission.xcodeproj'
   )
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for travis is read-only
@@ -90,7 +90,7 @@ end
 
 # Minor plist modifications
 lane :stamp_plist do
-  plist = 'emission/Example/Emission/Info.plist'
+  plist = '../emission/Example/Emission/Info.plist'
 
   # Increment build number to current date
   build_number = Time.new.strftime('%Y.%m.%d.%H')
