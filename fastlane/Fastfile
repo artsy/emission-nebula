@@ -34,14 +34,11 @@ lane :ship do
   upcoming_release_notes = File.read(changelog).split("\n### ").first
 
   # Log into iTunes connect, get the latest version of the app we shipped, and how many builds we've sent
-
-  build_number = latest_testflight_build_number + 1
-  version = get_version_number(xcodeproj: 'emission/Example/Emission.xcodeproj')
-
-  increment_build_number(
-    build_number: build_number,
-    xcodeproj: 'emission/Example/Emission.xcodeproj'
-  )
+  Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
+  app = Spaceship::Tunes::Application.find('net.artsy.Emission')
+  latest_version = app.build_trains.keys.sort.last
+  train = app.build_trains[latest_version]
+  build_version = train.builds.count + 1
 
   gym workspace: 'emission/Example/Emission.xcworkspace',
       configuration: 'Deploy',
@@ -49,7 +46,7 @@ lane :ship do
 
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for travis is read-only
-  tag = "deploy-#{version}-#{build_number}"
+  tag = "deploy-#{latest_version}-#{build_version}"
   sh "git tag -d '#{tag}'"
 
   # Ship to testflight
@@ -62,7 +59,7 @@ lane :ship do
 
   slack message: 'There is a new Emission beta available on Testflight.',
         payload: {
-          'Version' => version,
+          'Version' => latest_version,
           "What's new" => upcoming_release_notes
         },
         default_payloads: []
