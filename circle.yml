@@ -1,0 +1,14 @@
+machine:
+  xcode:
+    version: "8.2"
+
+dependencies:
+  override:
+    - bundle update
+
+test:
+  override:
+  - bundle exec fastlane setup
+  - bundle exec fastlane validate_env_vars
+  - bundle exec fastlane stamp_plist
+  - bundle exec fastlane ship

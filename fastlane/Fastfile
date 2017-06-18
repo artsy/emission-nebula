@@ -37,6 +37,9 @@ lane :ship do
   changelog = '../emission/CHANGELOG.md'
   upcoming_release_notes = File.read(changelog).split("\n### ").first
 
+  # Ship to testflight
+  pilot changelog: upcoming_release_notes
+
   # Log into iTunes connect, get the latest version of the app we shipped, and how many builds we've sent
   Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
   app = Spaceship::Tunes::Application.find('net.artsy.Emission')
@@ -48,9 +51,6 @@ lane :ship do
   # as the default remote for travis is read-only
   tag = "deploy-#{latest_version}-#{build_version}"
   `git tag -d '#{tag}'`
-
-  # Ship to testflight
-  pilot changelog: upcoming_release_notes
 
   # Tag releases
   add_git_tag tag: tag
