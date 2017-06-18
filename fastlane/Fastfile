@@ -44,11 +44,10 @@ lane :ship do
   train = app.build_trains[latest_version]
   build_version = train.builds.count + 1
 
-
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for travis is read-only
   tag = "deploy-#{latest_version}-#{build_version}"
-  sh "git tag -d '#{tag}'"
+  `git tag -d '#{tag}'`
 
   # Ship to testflight
   pilot changelog: upcoming_release_notes
