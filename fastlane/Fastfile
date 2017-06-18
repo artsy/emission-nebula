@@ -29,6 +29,10 @@ lane :ship do
   #   skip_build_archive: true,
   #   archive_path: '/Users/orta/Library/Developer/Xcode/Archives/2017-06-16/Emission 16-06-2017, 10.03.xcarchive'
 
+  gym workspace: 'emission/Example/Emission.xcworkspace',
+      configuration: 'Deploy',
+      scheme: 'Emission'
+
   # Get the last 10 lines of the CHANGELOG for Testflight
   changelog = '../emission/CHANGELOG.md'
   upcoming_release_notes = File.read(changelog).split("\n### ").first
@@ -40,9 +44,6 @@ lane :ship do
   train = app.build_trains[latest_version]
   build_version = train.builds.count + 1
 
-  gym workspace: 'emission/Example/Emission.xcworkspace',
-      configuration: 'Deploy',
-      scheme: 'Emission'
 
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for travis is read-only
