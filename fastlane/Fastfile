@@ -5,6 +5,7 @@ lane :setup do
     sh 'rm -rf emission' if Dir.exist? 'Emission'
     sh 'git clone https://github.com/artsy/emission.git'
     Dir.chdir('emission') do
+      sh 'git checkout skip'
       sh 'pod repo update'
       sh 'npm install'
     end
