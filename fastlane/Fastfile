@@ -6,8 +6,7 @@ lane :setup do
     sh 'git clone https://github.com/artsy/emission.git'
     Dir.chdir('emission') do
       sh 'git checkout skip'
-      sh 'pod repo update'
-      sh 'npm install'
+      sh '. ~/.nvm/nvm.sh && nvm use && npm install yarn --global && yarn install'
     end
 
     Dir.chdir('emission/Example') do
