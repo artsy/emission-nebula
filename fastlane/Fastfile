@@ -28,11 +28,13 @@ lane :ship do
   #   configuration: 'Deploy',
   #   scheme: 'Emission',
   #   skip_build_archive: true,
-  #   archive_path: '/Users/orta/Library/Developer/Xcode/Archives/2017-06-16/Emission 16-06-2017, 10.03.xcarchive'
+    # archive_path: '/Users/orta/Library/Developer/Xcode/Archives/2017-07-13/Emission 13-07-2017, 09.34.xcarchive'
 
-  gym workspace: 'emission/Example/Emission.xcworkspace',
-      configuration: 'Deploy',
-      scheme: 'Emission'
+  Dir.chdir("../emission/Example/Pods") do
+    gym workspace: 'Emission.xcworkspace',
+        configuration: 'Deploy',
+        scheme: 'Emission'
+  end
 
   # Get the last 10 lines of the CHANGELOG for Testflight
   changelog = '../emission/CHANGELOG.md'
@@ -48,15 +50,19 @@ lane :ship do
   train = app.build_trains[latest_version]
   build_version = train.builds.count + 1
 
-  # Do a tag, we use a http git remote so we can have push access
-  # as the default remote for travis is read-only
-  tag = "deploy-#{latest_version}-#{build_version}"
-  `git tag -d '#{tag}'`
+  # # Do a tag, we use a http git remote so we can have push access
+  # # as the default remote for travis is read-only
+  # tag = "deploy-#{latest_version}-#{build_version}"
+  # `git tag -d '#{tag}'`
 
-  # Tag releases
-  add_git_tag tag: tag
-  sh "git remote add http https://#{ENV['GITHUB_SUBMODULES_USER']}@github.com/artsy/emission.git"
-  sh "git push http #{tag}"
+  # # Tag releases
+  # add_git_tag tag: tag
+  # if ENV['GITHUB_SUBMODULES_USER']
+  #   sh "git remote add http https://#{ENV['GITHUB_SUBMODULES_USER']}@github.com/artsy/emission.git"
+  # else 
+  #   sh "git remote add http https://github.com/artsy/emission.git"
+  # end
+  # sh "git push http #{tag}"
 
   slack message: 'There is a new Emission beta available on Testflight.',
         payload: {
@@ -102,8 +108,8 @@ lane :validate_env_vars do
     raise 'You need to set FASTLANE_USERNAME, FASTLANE_PASSWORD and MATCH_PASSWORD in your environment'
   end
 
-  unless ENV['GITHUB_SUBMODULES_USER']
-    raise 'You need to set GITHUB_SUBMODULES_USER in your environment'
+  if ENV['GITHUB_SUBMODULES_USER']
+    raise 'You may need to set GITHUB_SUBMODULES_USER in your environment, if you do not have access to artsy/emission-nebula'
   end
 
   unless ENV['SLACK_URL']
