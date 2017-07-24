@@ -29,9 +29,17 @@ lane :ship do
   #   skip_build_archive: true,
   #   archive_path: '/Users/orta/Library/Developer/Xcode/Archives/2017-06-16/Emission 16-06-2017, 10.03.xcarchive'
 
-  gym workspace: 'emission/Example/Emission.xcworkspace',
-      configuration: 'Deploy',
-      scheme: 'Emission'
+  # We were having issues with building an app a few folders deep,
+  # due to hitting "empty archive" issues.
+  #
+  # The /Pods bit is because we can rely on it being there, see
+  # this link: https://docs.fastlane.tools/advanced/#directory-behavior
+  #
+  Dir.chdir('../emission/Example/Pods') do
+    gym workspace: 'Emission.xcworkspace',
+        configuration: 'Deploy',
+        scheme: 'Emission'
+  end
 
   # Get the last 10 lines of the CHANGELOG for Testflight
   changelog = '../emission/CHANGELOG.md'
