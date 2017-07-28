@@ -64,3 +64,4 @@ emission
 fastlane/report.xml
 fastlane/README.md
 Emission.*
+error_log.txt

@@ -1,13 +1,21 @@
+# Use a Mac build please
 language: objective-c
 osx_image: xcode8.2
+
+# Ensure that Fastlane is at the latest version
 before_install:
 - bundle update
+
+# Let fastlane set up the other dependency managers
 before_script:
 - bundle exec fastlane setup
+
+# Separate fastlane lanes so that they can be individually
+# tested one by one during development
 script:
 - bundle exec fastlane validate_env_vars
-- bundle exec fastlane stamp_plist
-- bundle exec fastlane ship
+- bundle exec fastlane ci_deploy
+
 notifications:
   slack:
     secure: NUWVxfrccR79maPv896T6vbUz89EH32zZw/ySoE5qpyu0sYGqtcQ9wUzrOOrt8rWNi49jocCKzfdv/A34q5emdbXByBfFsWoaKpznZ+I+IyCWyXvHBP4/wl4dmY/Q+Sv657gbSiEFwgqOyayXEtbTwfNUlR/+I1kMtRwibUKR35JkMJl+O7HeCaLDpDZA5YQfEljSIuhmvicdM5WObJemF0SRo1A3+7PrDCE54XM75H8vS6cOB527KJ6S7janQhHHA8yz51f0Uf57WIBne9X7C0TShmcvgHbYFYEWNWk5XSVolefsEasgzokl7edwguGIibf5SfuHAVuYf6an0F6bptsWIhUqgvWiF1Nfbbelfo9tWXVS3/YjqZUbaLxZ5ej4s7/ku6aLPfPnz+q3iPCZCPFf2ErLDQdXhhob+tPp+eX9sUip7Mpjh0s88crg/FaykIyOV2PhfOdsyIKNGW2ULdOAgxm72HdqHHSO/cBTsWR5WQOv0FnL+WbidLPybC2njosE/eFC/h14vB5hEeQ3dNTX0Kx38GXW/mFXcfbPYlOcbP+4rXWR6XWkkGnUaSQZQLvZC5qRF/z9jZhV8yYL8aprHtHH4QedM/so8604rbParrrli64K4sebKfzmnMzOHTlL2m7qLs7440OGYDzDqz0sOFeY2nZahm90B3zgCs=
