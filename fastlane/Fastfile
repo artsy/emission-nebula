@@ -57,7 +57,7 @@ lane :ship do
   # inside the emission repo, instead of our own.
   Dir.chdir('../emission/Example/') do
     tag = "deploy-#{latest_version}-#{build_version}"
-    add_git_tag(key: tag)
+    add_git_tag(tag: tag)
 
     if ENV['GITHUB_SUBMODULES_USER']
       writable_remote = "https://#{ENV['GITHUB_SUBMODULES_USER']}@github.com/artsy/emission.git"
