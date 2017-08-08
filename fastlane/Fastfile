@@ -14,6 +14,11 @@ lane :setup do
       sh 'pod repo update'
       sh 'pod install'
     end
+
+    Dir.chdir('emission') do
+      sh 'yarn bundle-with-storybooks'
+    end
+
     stamp_plist
   end
 end
