@@ -8,15 +8,12 @@ lane :setup do
     sh 'git clone https://github.com/artsy/emission.git'
     Dir.chdir('emission') do
       sh '. ~/.nvm/nvm.sh && nvm use && npm install yarn --global && yarn install'
+      sh 'yarn bundle-with-storybooks'
     end
 
     Dir.chdir('emission/Example') do
       sh 'pod repo update'
       sh 'pod install'
-    end
-
-    Dir.chdir('emission') do
-      sh 'yarn bundle-with-storybooks'
     end
 
     stamp_plist
