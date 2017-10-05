@@ -4,8 +4,6 @@ osx_image: xcode8.2
 
 # Ensure that Fastlane, node and yarn are at the latest versions
 before_install:
-- brew install yarn
-- nvm install 8.4
 - bundle update
 
 # Let fastlane set up the other dependency managers
