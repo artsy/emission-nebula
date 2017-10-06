@@ -1,0 +1,8 @@
+# Defaults can be found here: https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+
+AllCops:
+  TargetRubyVersion: 2.0
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+  Enabled: true

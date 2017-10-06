@@ -1,20 +1,20 @@
-# This is documented in the Artsy Blog: 
+# This is documented in the Artsy Blog:
 # http://artsy.github.io/blog/2017/07/31/fastlane-travis-weekly-deploys/
 
 # Clones Emission and sets it up
 lane :setup do
-  Dir.chdir('..') do
-    sh 'rm -rf emission' if Dir.exist? 'Emission'
-    sh 'git clone https://github.com/artsy/emission.git'
-    Dir.chdir('emission') do
-      sh '. ~/.nvm/nvm.sh && nvm use && npm install yarn --global && yarn install'
-      sh 'yarn relay'
-      sh 'yarn bundle-with-storybooks'
+  Dir.chdir("..") do
+    sh "rm -rf emission" if Dir.exist? "Emission"
+    sh "git clone https://github.com/artsy/emission.git"
+    Dir.chdir("emission") do
+      sh ". ~/.nvm/nvm.sh && nvm use && npm install yarn --global && yarn install"
+      sh "yarn relay"
+      sh "yarn bundle-with-storybooks"
     end
 
-    Dir.chdir('emission/Example') do
-      sh 'pod repo update'
-      sh 'pod install'
+    Dir.chdir("emission/Example") do
+      sh "pod repo update"
+      sh "pod install"
     end
 
     stamp_plist
@@ -35,22 +35,31 @@ lane :ship do
   # The /Pods bit is because we can rely on it being there, see
   # this link: https://docs.fastlane.tools/advanced/#directory-behavior
   #
-  Dir.chdir('../emission/Example/Pods') do
-    gym(workspace: 'Emission.xcworkspace',
-        configuration: 'Deploy',
-        scheme: 'Emission')
+  Dir.chdir("../emission/Example/Pods") do
+    begin
+      gym(workspace: "Emission.xcworkspace",
+      configuration: "Deploy",
+      scheme: "Emission")
+
+      # Right now the second build of the entire CI seems to work,
+      # so maybe we can shortcut that by doing it inside the one CI run.
+    rescue => exception
+      gym(workspace: "Emission.xcworkspace",
+      configuration: "Deploy",
+      scheme: "Emission")
+    end
   end
 
   # Get the last 10 lines of the CHANGELOG for Testflight
-  changelog = '../emission/CHANGELOG.md'
+  changelog = "../emission/CHANGELOG.md"
   upcoming_release_notes = File.read(changelog).split("\n### ").first
 
   # Ship to testflight
   pilot(changelog: upcoming_release_notes)
 
   # Log into iTunes connect, get the latest version of the app we shipped, and how many builds we've sent
-  Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
-  app = Spaceship::Tunes::Application.find('net.artsy.Emission')
+  Spaceship::Tunes.login(ENV["FASTLANE_USERNAME"], ENV["FASTLANE_PASSWORD"])
+  app = Spaceship::Tunes::Application.find("net.artsy.Emission")
   latest_version = app.build_trains.keys.sort.last
   train = app.build_trains[latest_version]
   build_version = train.builds.count + 1
@@ -58,23 +67,23 @@ lane :ship do
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for travis is read-only. This needs to be
   # inside the emission repo, instead of our own.
-  Dir.chdir('../emission/Example/') do
+  Dir.chdir("../emission/Example/") do
     tag = "deploy-#{latest_version}-#{build_version}"
     add_git_tag(tag: tag)
 
-    if ENV['GITHUB_SUBMODULES_USER']
+    if ENV["GITHUB_SUBMODULES_USER"]
       writable_remote = "https://#{ENV['GITHUB_SUBMODULES_USER']}@github.com/artsy/emission.git"
       sh "git remote add http #{writable_remote}"
     else
-      sh 'git remote add http https://github.com/artsy/emission.git'
+      sh "git remote add http https://github.com/artsy/emission.git"
     end
 
-    push_git_tags(remote: 'http')
+    push_git_tags(remote: "http")
   end
 
-  slack message: 'There is a new Emission beta available on Testflight.',
+  slack message: "There is a new Emission beta available on Testflight.",
         payload: {
-          'Version' => latest_version,
+          "Version" => latest_version,
           "What's new" => upcoming_release_notes
         },
         default_payloads: []
@@ -82,31 +91,31 @@ end
 
 # In case you need to update the signing profiles for this app
 lane :update_signing do
-  match(type: 'appstore')
+  match(type: "appstore")
 end
 
 # Used by CI, will not sneakily update (the CI only has read-only access to the repo anyway)
 lane :setup_signing do
   setup_travis
-  match(type: 'appstore')
+  match(type: "appstore")
 end
 
 # Minor plist modifications
 lane :stamp_plist do
-  plist = 'emission/Example/Emission/Info.plist'
+  plist = "emission/Example/Emission/Info.plist"
 
   # Increment build number to current date
-  build_number = Time.new.strftime('%Y.%m.%d.%H')
+  build_number = Time.new.strftime("%Y.%m.%d.%H")
   `/usr/libexec/PlistBuddy -c "Set CFBundleVersion #{build_number}" "#{plist}"`
 end
 
 # Mainly so we don't forget to include these vars in the future
 lane :validate_env_vars do
-  unless ENV['FASTLANE_USERNAME'] && ENV['FASTLANE_PASSWORD'] && ENV['MATCH_PASSWORD']
-    raise 'You need to set FASTLANE_USERNAME, FASTLANE_PASSWORD and MATCH_PASSWORD in your environment'
+  unless ENV["FASTLANE_USERNAME"] && ENV["FASTLANE_PASSWORD"] && ENV["MATCH_PASSWORD"]
+    raise "You need to set FASTLANE_USERNAME, FASTLANE_PASSWORD and MATCH_PASSWORD in your environment"
   end
 
-  unless ENV['SLACK_URL']
+  unless ENV["SLACK_URL"]
     raise "You need to set SLACK_URL (#{ENV['SLACK_URL']}) in your environment."
   end
 end
