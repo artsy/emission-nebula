@@ -8,6 +8,7 @@ before_install:
 
 # Let fastlane set up the other dependency managers
 before_script:
+- nvm install 8.4
 - bundle exec fastlane setup
 
 # Separate fastlane lanes so that they can be individually
