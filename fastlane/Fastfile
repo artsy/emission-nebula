@@ -7,6 +7,7 @@ lane :setup do
     sh "rm -rf emission" if Dir.exist? "Emission"
     sh "git clone https://github.com/artsy/emission.git"
     Dir.chdir("emission") do
+      sh "git checkout update_fonts"
       sh ". ~/.nvm/nvm.sh && nvm use && npm install yarn --global && yarn install"
       sh "yarn relay"
       sh "yarn bundle-with-storybooks"
@@ -15,6 +16,8 @@ lane :setup do
     Dir.chdir("emission/Example") do
       sh "pod repo update"
       sh "pod install"
+      puts "fonts: (want to see `static BOOL useClosedFonts = true`)"
+      puts File.read("Pods/Artsy+UIFonts/Pod/Classes/UIFont+ArtsyFonts.m")
     end
 
     stamp_plist
