@@ -15,6 +15,7 @@ before_script:
 # Separate fastlane lanes so that they can be individually
 # tested one by one during development
 script:
+- set +e # Workaround for Travis bug. See https://github.com/travis-ci/travis-ci/issues/6522
 - bundle exec fastlane validate_env_vars
 - bundle exec fastlane ci_deploy
 
