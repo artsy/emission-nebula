@@ -9,6 +9,8 @@ before_install:
 
 # Let fastlane set up the other dependency managers
 before_script:
+# Workaround for Travis bug. See note below.
+- shell_session_update() { :; } 
 - nvm install 8.4
 - bundle exec fastlane setup
 
