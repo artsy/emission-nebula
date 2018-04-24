@@ -1,6 +1,6 @@
 # Use a Mac build please
 language: objective-c
-osx_image: xcode8.3
+osx_image: xcode9.3
 rvm: 2.5.0 # Fastlane requires a version abopve 2.x
 
 # Ensure that Fastlane, node and yarn are at the latest versions
