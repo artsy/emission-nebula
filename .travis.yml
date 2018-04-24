@@ -9,15 +9,12 @@ before_install:
 
 # Let fastlane set up the other dependency managers
 before_script:
-# Workaround for Travis bug. See note below.
-- shell_session_update() { :; } 
 - nvm install 8.4
 - bundle exec fastlane setup
 
 # Separate fastlane lanes so that they can be individually
 # tested one by one during development
 script:
-- set +e # Workaround for Travis bug. See https://github.com/travis-ci/travis-ci/issues/6522
 - bundle exec fastlane validate_env_vars
 - bundle exec fastlane ci_deploy
 
