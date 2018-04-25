@@ -67,14 +67,12 @@ lane :ship do
   Spaceship::Tunes.login(ENV["FASTLANE_USERNAME"], ENV["FASTLANE_PASSWORD"])
   app = Spaceship::Tunes::Application.find("net.artsy.Emission")
   latest_version = app.build_trains.versions.sort.last
-  train = app.build_trains[latest_version]
-  build_version = train.count + 1
 
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for travis is read-only. This needs to be
   # inside the emission repo, instead of our own.
   Dir.chdir("../emission/Example/") do
-    tag = "deploy-#{latest_version}-#{build_version}"
+    tag = "deploy-#{latest_version}-#{Time.new.strftime("%Y.%m.%d.%H")}"
     add_git_tag(tag: tag)
 
     if ENV["GITHUB_SUBMODULES_USER"]
