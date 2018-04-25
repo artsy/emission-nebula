@@ -58,7 +58,7 @@ lane :ship do
 
   # Get the last 10 lines of the CHANGELOG for Testflight
   changelog = "../emission/CHANGELOG.md"
-  upcoming_release_notes = File.read(changelog).split("\n### ").first
+  upcoming_release_notes = File.read(changelog).gsub(/<![^>]*>/, '').split("\n### ").first
 
   # Ship to testflight
   pilot(changelog: upcoming_release_notes)
