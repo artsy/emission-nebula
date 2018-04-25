@@ -130,5 +130,5 @@ end
 error do |_, exception|
   slack(message: "Error Deploying Emission: #{exception}",
         success: false,
-        payload: { Output: exception.error_info.to_s })
+        payload: { Output: exception.to_s })
 end
