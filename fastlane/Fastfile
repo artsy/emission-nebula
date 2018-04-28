@@ -56,9 +56,9 @@ lane :ship do
     end
   end
 
-  # Get the last 10 lines of the CHANGELOG for Testflight
+  # Get the current master changes from the CHANGELOG, filtering out HTML comments, for sending to Testflight
   changelog = "../emission/CHANGELOG.md"
-  upcoming_release_notes = File.read(changelog).gsub(/<![^>]*>/, '').split("\n### ").first
+  upcoming_release_notes = File.read(changelog).gsub(/<![^>]*>/, '').split("\n### ")[1]
 
   # Ship to testflight
   pilot(changelog: upcoming_release_notes)
