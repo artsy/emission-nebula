@@ -5,6 +5,7 @@ rvm: 2.5.0 # Fastlane requires a version abopve 2.x
 
 # Ensure that Fastlane, node and yarn are at the latest versions
 before_install:
+  - gem update --system 2.7.6 # Workaround until this is merged and released: https://github.com/CocoaPods/CocoaPods/pull/7769
   - bundle update fastlane
 
 # Let fastlane set up the other dependency managers
