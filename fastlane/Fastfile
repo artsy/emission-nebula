@@ -15,9 +15,10 @@ lane :setup do
     end
 
     Dir.chdir("emission/Example") do
-      if ENV['ARTSY_API_KEY'] && ENV['ARTSY_API_SECRET']
+      if ENV['ARTSY_API_KEY'] && ENV['ARTSY_API_SECRET'] && ENV['STRIPE_PUBLISHABLE_KEY']
         sh "bundle exec pod keys set ArtsyAPIClientKey $ARTSY_API_KEY"
         sh "bundle exec pod keys set ArtsyAPIClientSecret $ARTSY_API_SECRET"
+        sh "bundle exec pod keys set StripePublishableKey $STRIPE_PUBLISHABLE_KEY"
       end
       sh "bundle exec pod repo update"
       sh "bundle exec pod install"
