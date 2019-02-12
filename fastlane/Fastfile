@@ -64,7 +64,10 @@ lane :ship do
   upcoming_release_notes = CGI.escape_html(File.read(changelog).gsub(/<![^>]*>/, '').split("\n### ")[1])
 
   # Ship to testflight
-  pilot(changelog: upcoming_release_notes, itc_provider: 'ArtsyInc', distribute_external: true, groups: ['Artsy Collaborators'])
+  pilot(changelog: upcoming_release_notes,
+    itc_provider: 'ArtsyInc',
+    distribute_external: true,
+    groups: ['Artsy Collaborators'])
 
   # Log into iTunes connect, get the latest version of the app we shipped, and how many builds we've sent
   Spaceship::Tunes.login(ENV["FASTLANE_USERNAME"], ENV["FASTLANE_PASSWORD"])
