@@ -110,7 +110,7 @@ lane :setup_signing do
   setup_travis
 
   disable_automatic_code_signing(
-    path: '../emission/Emission.xcodeproj',
+    path: '../emission/Example/Emission.xcodeproj',
     team_id: '23KMWZ572J',
     targets: ['Emission'],
     profile_name: 'match AppStore net.artsy.Emission'
