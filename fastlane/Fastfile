@@ -43,6 +43,12 @@ lane :ship do
   # this link: https://docs.fastlane.tools/advanced/#directory-behavior
   #
   Dir.chdir("../emission/Example/Pods") do
+    disable_automatic_code_signing(
+      path: 'Emission.xcodeproj',
+      team_id: '23KMWZ572J',
+      targets: ['Emission'],
+      profile_name: 'match AppStore net.artsy.Emission'
+    )
     begin
       gym(workspace: "Emission.xcworkspace",
       configuration: "Deploy",
@@ -108,14 +114,6 @@ end
 # Used by CI, will not sneakily update (the CI only has read-only access to the repo anyway)
 lane :setup_signing do
   setup_travis
-
-  disable_automatic_code_signing(
-    path: '../emission/Example/Emission.xcodeproj',
-    team_id: '23KMWZ572J',
-    targets: ['Emission'],
-    profile_name: 'match AppStore net.artsy.Emission'
-  )
-
   match(type: "appstore")
 end
 
