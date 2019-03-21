@@ -22,6 +22,8 @@ lane :setup do
         sh "bundle exec pod keys set StripePublishableKey $STRIPE_PUBLISHABLE_KEY"
       end
       sh "bundle exec pod repo update"
+      # Run `pod install` twice, otherwise pre-patch is not applied and build will fail with CocoaPods-Keys problems.
+      sh "bundle exec pod install"
       sh "bundle exec pod install"
     end
 
