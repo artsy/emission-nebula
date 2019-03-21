@@ -48,12 +48,14 @@ lane :ship do
       path: 'Emission.xcodeproj',
       team_id: '23KMWZ572J',
       targets: ['Emission'],
-      profile_name: 'match AppStore net.artsy.Emission'
+      profile_name: 'match AppStore net.artsy.Emission',
+      silent: true # Travis cuts off our logs because they're too long.
     )
     begin
       gym(workspace: "Emission.xcworkspace",
-      configuration: "Deploy",
-      scheme: "Emission")
+        configuration: "Deploy",
+        scheme: "Emission",
+        profile_name: 'match AppStore net.artsy.Emission')
       sh "set +e" # Workaround for Travis bug. See https://github.com/travis-ci/travis-ci/issues/6522
 
       # Right now the second build of the entire CI seems to work,
