@@ -64,8 +64,10 @@ lane :ship do
       # so maybe we can shortcut that by doing it inside the one CI run.
     rescue => exception
       gym(workspace: "Emission.xcworkspace",
-      configuration: "Deploy",
-      scheme: "Emission")
+        configuration: "Deploy",
+        scheme: "Emission",
+        silent: true
+      )
       sh "set +e" # Workaround for Travis bug. See https://github.com/travis-ci/travis-ci/issues/6522
     end
   end
