@@ -6,10 +6,11 @@ require 'cgi'
 # Clones Emission and sets it up
 lane :setup do
   Dir.chdir("..") do
-    sh "rm -rf emission" if Dir.exist? "Emission"
+    sh "rm -rf emission" if Dir.exist? "emission"
     sh "git clone https://github.com/artsy/emission.git"
     Dir.chdir("emission") do
-      sh ". ~/.nvm/nvm.sh && nvm use && npm install yarn --global && yarn install"
+      sh ". ~/.nvm/nvm.sh && nvm use && npm install yarn --global"
+      sh "yarn install"
       sh "yarn relay"
       sh "yarn bundle-with-storybooks"
     end
