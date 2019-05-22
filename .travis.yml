@@ -1,6 +1,7 @@
 # Use a Mac build please
 language: objective-c
 osx_image: xcode10.2
+rvm: system
 
 # Ensure that Fastlane, node and yarn are at the latest versions
 before_install:
