@@ -57,13 +57,6 @@ lane :ship do
         configuration: "Deploy",
         scheme: "Emission",
         silent: true, # Travis cuts off our logs because they're too long.
-        export_method: "app-store",
-        export_options: {
-          method: "app-store",
-          provisioningProfiles: { 
-            "net.artsy.Emission" => "match AppStore net.artsy.Emission",
-          }
-        },
         )
       sh "set +e" # Workaround for Travis bug. See https://github.com/travis-ci/travis-ci/issues/6522
 
@@ -74,13 +67,6 @@ lane :ship do
         configuration: "Deploy",
         scheme: "Emission",
         silent: true,
-        export_method: "app-store",
-        export_options: {
-          method: "app-store",
-          provisioningProfiles: { 
-            "net.artsy.Emission" => "match AppStore net.artsy.Emission",
-          }
-        },
       )
       sh "set +e" # Workaround for Travis bug. See https://github.com/travis-ci/travis-ci/issues/6522
     end
