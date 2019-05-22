@@ -3,7 +3,7 @@
 Handles weekly deploys of Emission to TestFlight. 
 
 * __State:__ production
-* __Point People:__ [@orta](https://github.com/orta)
+* __Point People:__ [@ashfurrow](https://github.com/ashfurrow)
 * __Builds:__ https://travis-ci.org/artsy/emission-nebula/builds
 
 ### Deploying manually
