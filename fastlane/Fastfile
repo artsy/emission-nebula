@@ -126,7 +126,7 @@ end
 
 # Minor plist modifications
 lane :stamp_plist do
-  plist = "emission/Example/Emission/Info.plist"
+  plist = "../emission/Example/Emission/Info.plist"
 
   # Increment build number to current date
   build_number = Time.new.strftime("%Y.%m.%d.%H")
