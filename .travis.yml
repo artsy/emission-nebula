@@ -5,6 +5,7 @@ rvm: system
 
 addons:
   artifacts:
+    debug: true
     paths:
       - $HOME/Library/Developer/Xcode/Archives/
 
