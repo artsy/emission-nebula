@@ -5,7 +5,8 @@ rvm: system
 
 addons:
   artifacts:
-    - $HOME/Library/Developer/Xcode/Archives/
+    paths:
+      - $HOME/Library/Developer/Xcode/Archives/
 
 # Ensure that Fastlane, node and yarn are at the latest versions
 before_install:
