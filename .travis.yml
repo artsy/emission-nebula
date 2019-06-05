@@ -8,8 +8,7 @@ addons:
     debug: true
     paths:
       - $HOME/Library/Developer/Xcode/Archives/
-      - $(git ls-files -o | tr "\n" ":")
-      - $(ls /var/log/*.log | tr "\n" ":")
+      - ./buildlog/
 
 # Ensure that Fastlane, node and yarn are at the latest versions
 before_install:
