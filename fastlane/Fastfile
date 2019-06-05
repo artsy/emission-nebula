@@ -52,24 +52,11 @@ lane :ship do
       targets: ['Emission'],
       profile_name: 'match AppStore net.artsy.Emission'
     )
-    begin
-      gym(workspace: "Emission.xcworkspace",
-        configuration: "Deploy",
-        scheme: "Emission",
-        silent: true, # Travis cuts off our logs because they're too long.
-        )
-      sh "set +e" # Workaround for Travis bug. See https://github.com/travis-ci/travis-ci/issues/6522
-
-      # Right now the second build of the entire CI seems to work,
-      # so maybe we can shortcut that by doing it inside the one CI run.
-    rescue => exception
-      gym(workspace: "Emission.xcworkspace",
-        configuration: "Deploy",
-        scheme: "Emission",
-        silent: true,
+    gym(workspace: "Emission.xcworkspace",
+      configuration: "Deploy",
+      scheme: "Emission",
       )
-      sh "set +e" # Workaround for Travis bug. See https://github.com/travis-ci/travis-ci/issues/6522
-    end
+    sh "set +e" # Workaround for Travis bug. See https://github.com/travis-ci/travis-ci/issues/6522
   end
 
   # Get the current master changes from the CHANGELOG, filtering out HTML comments, for sending to Testflight
