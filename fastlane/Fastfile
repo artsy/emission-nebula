@@ -55,6 +55,7 @@ lane :ship do
     gym(workspace: "Emission.xcworkspace",
       configuration: "Deploy",
       scheme: "Emission",
+      buildlog_path: "../../buildlog"
       )
     sh "set +e" # Workaround for Travis bug. See https://github.com/travis-ci/travis-ci/issues/6522
   end
