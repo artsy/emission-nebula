@@ -25,7 +25,7 @@ before_script:
 # tested one by one during development
 script:
 - bundle exec fastlane validate_env_vars
-- bundle exec fastlane ci_deploy
+- bundle exec fastlane ci_deploy || bundle exec fastlane ci_deploy
 
 notifications:
   slack:
