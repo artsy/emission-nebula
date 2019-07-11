@@ -56,6 +56,7 @@ lane :ship do
       configuration: "Deploy",
       scheme: "Emission",
       clean: true,
+      suppress_xcode_output: true, # Output is in the buildlog, which is uploaded to S3.
       buildlog_path: "../../buildlog"
       )
     sh "set +e" # Workaround for Travis bug. See https://github.com/travis-ci/travis-ci/issues/6522
