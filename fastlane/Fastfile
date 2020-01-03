@@ -64,7 +64,7 @@ lane :ship do
 
   # Get the current master changes from the CHANGELOG, filtering out HTML comments, for sending to Testflight
   changelog = "../emission/CHANGELOG.md"
-  upcoming_release_notes = CGI.escape_html(File.read(changelog).gsub(/<![^>]*>/, '').split("\n### ")[1])
+  upcoming_release_notes = CGI.escape_html(File.read(changelog).gsub(/<![^>]*>/, '').split("\n---")[1])
 
   # Ship to testflight
   pilot(changelog: upcoming_release_notes,
