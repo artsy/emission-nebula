@@ -18,8 +18,8 @@ before_install:
 
 # Let fastlane set up the other dependency managers
 before_script:
-- nvm install 10.13.0
-- bundle exec fastlane setup
+  - nvm install 12.13.1
+  - bundle exec fastlane setup
 
 # Separate fastlane lanes so that they can be individually
 # tested one by one during development
