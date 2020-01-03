@@ -11,7 +11,7 @@ addons:
 
 # Ensure that Fastlane, node and yarn are at the latest versions
 before_install:
-  - rvm install ruby-2.5.3
+  - rvm install ruby-2.6.3
   - gem install bundler
   - bundle update fastlane
   - bundle exec fastlane env
