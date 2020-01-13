@@ -2,7 +2,7 @@
 
 Handles weekly deploys of Emission to TestFlight. 
 
-* __State:__ production
+* __State:__ ~production~ retired (we no longer use the Emission Example app to QA changes, its primary use is as a day-to-day development testbed)
 * __Point People:__ [@ashfurrow](https://github.com/ashfurrow)
 * __Builds:__ https://travis-ci.org/artsy/emission-nebula/builds
 
